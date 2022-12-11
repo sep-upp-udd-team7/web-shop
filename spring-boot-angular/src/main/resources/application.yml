@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: web-shop
+  datasource:
+    driverClassName: org.postgresql.Driver
+    initialization-mode: always
+    password: ${PASS}
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/web_shop
+    username: postgres
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+jwt:
+  secret: security
+
+server:
+  port: 9000
+
+managment:
+  security:
+    enabled: true

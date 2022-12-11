@@ -1,0 +1,75 @@
+package com.baeldung.ecommerce.service;
+
+import com.baeldung.ecommerce.dto.Token;
+import com.baeldung.ecommerce.dto.TransactionDataDto;
+import com.baeldung.ecommerce.model.Order;
+import com.baeldung.ecommerce.model.OrderStatus;
+import com.baeldung.ecommerce.repository.OrderRepository;
+import com.baeldung.ecommerce.utils.RandomCharacterGenerator;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDate;
+
+@Service
+@Transactional
+public class OrderServiceImpl implements OrderService {
+
+    private OrderRepository orderRepository;
+
+    private final static String shopId="123456789";
+
+
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public Iterable<Order> getAllOrders() {
+        return this.orderRepository.findAll();
+    }
+
+    @Override
+    public Order create(Order order) {
+        order.setDateCreated(LocalDate.now());
+        order.setStatus(OrderStatus.CREATED);
+        order.setOrderId(RandomCharacterGenerator.generateURLSafeString(16));
+        return this.orderRepository.save(order);
+    }
+
+    public Token generateOrderToken(Order order) {
+        WebClient webClient = WebClient.create("http://localhost:8000");
+        TransactionDataDto transactionDataDto = new TransactionDataDto();
+        transactionDataDto.setTransactionId(order.getOrderId());
+        transactionDataDto.setShopId(shopId);
+        System.out.println(order.getTotalOrderPrice());
+        transactionDataDto.setAmount(order.getTotalOrderPrice().toString());
+
+
+        Token token = webClient.post()
+                .uri("/auth-service/generate-token")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(Mono.just(transactionDataDto), TransactionDataDto.class)
+                .retrieve()
+                .bodyToMono(Token.class)
+                .block();
+
+        return token;
+    }
+
+    @Override
+    public Order changeOrderState(String orderId, OrderStatus status) {
+        Order order=orderRepository.getOrderById(orderId);
+        order.setStatus(status);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public void update(Order order) {
+        this.orderRepository.save(order);
+    }
+}
