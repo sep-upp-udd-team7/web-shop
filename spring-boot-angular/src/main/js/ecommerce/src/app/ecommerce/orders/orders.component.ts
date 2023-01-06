@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit {
         this.paid = true;
         this.ecommerceService.saveOrder(this.orders).subscribe((data)=>{
             alert('Success');
-            window.open("http://localhost:4200/select-payment-option/?token="+data.token.content, "_blank");
+            window.open("http://localhost:4200/select-payment-option/?token="+data.token.token, "_blank");
         });
     }
 

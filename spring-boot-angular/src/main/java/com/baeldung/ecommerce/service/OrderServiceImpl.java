@@ -1,5 +1,7 @@
 package com.baeldung.ecommerce.service;
 
+import com.baeldung.ecommerce.dto.AccessTokenDto;
+import com.baeldung.ecommerce.dto.AccessTokenRequestDto;
 import com.baeldung.ecommerce.dto.Token;
 import com.baeldung.ecommerce.dto.TransactionDataDto;
 import com.baeldung.ecommerce.model.Order;
@@ -22,6 +24,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     private final static String shopId="123456789";
+
+    private final static String clientSecret="123";
 
 
     public OrderServiceImpl(OrderRepository orderRepository) {
@@ -53,12 +57,28 @@ public class OrderServiceImpl implements OrderService {
         Token token = webClient.post()
                 .uri("/auth-service/generate-token")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION,"Bearer "+generateAccessToken())
                 .body(Mono.just(transactionDataDto), TransactionDataDto.class)
                 .retrieve()
                 .bodyToMono(Token.class)
                 .block();
 
         return token;
+    }
+
+    private String generateAccessToken(){
+        AccessTokenRequestDto dto=new AccessTokenRequestDto();
+        dto.setClientId(shopId);
+        dto.setClientSecret(clientSecret);
+        WebClient webClient = WebClient.create("http://localhost:8000");
+        AccessTokenDto accessTokenDto = webClient.post()
+                .uri("/auth-service/generate-jwt")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(Mono.just(dto), AccessTokenRequestDto.class)
+                .retrieve()
+                .bodyToMono(AccessTokenDto.class)
+                .block();
+        return accessTokenDto.getToken();
     }
 
     @Override

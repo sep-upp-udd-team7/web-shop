@@ -19,5 +19,5 @@ public interface OrderService {
 
     Token generateOrderToken(Order order);
 
-    Order changeOrderState(String orderId);
+    Order changeOrderState(String orderId, OrderStatus status);
 }
