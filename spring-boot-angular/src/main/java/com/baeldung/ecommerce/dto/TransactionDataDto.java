@@ -10,5 +10,7 @@ public class TransactionDataDto {
     private String amount;
 
     private String transactionId;
+
+    private String accessToken;
 }
 

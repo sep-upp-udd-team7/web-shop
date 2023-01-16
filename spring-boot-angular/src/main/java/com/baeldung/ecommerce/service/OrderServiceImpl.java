@@ -8,6 +8,7 @@ import com.baeldung.ecommerce.model.Order;
 import com.baeldung.ecommerce.model.OrderStatus;
 import com.baeldung.ecommerce.repository.OrderRepository;
 import com.baeldung.ecommerce.utils.RandomCharacterGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,11 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
 
-    private final static String shopId="123456789";
+    @Value("${shop-auth.client-id}")
+    private String shopId;
 
-    private final static String clientSecret="123";
+    @Value("${shop-auth.client-secret}")
+    private String clientSecret;
 
 
     public OrderServiceImpl(OrderRepository orderRepository) {
@@ -52,12 +55,13 @@ public class OrderServiceImpl implements OrderService {
         transactionDataDto.setShopId(shopId);
         System.out.println(order.getTotalOrderPrice());
         transactionDataDto.setAmount(order.getTotalOrderPrice().toString());
-
+        String accessToken=generateAccessToken();
+        transactionDataDto.setAccessToken(accessToken);
 
         Token token = webClient.post()
-                .uri("/auth-service/generate-token")
+                .uri("/auth-service/generate-url-token")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION,"Bearer "+generateAccessToken())
+                .header(HttpHeaders.AUTHORIZATION,"Bearer "+accessToken)
                 .body(Mono.just(transactionDataDto), TransactionDataDto.class)
                 .retrieve()
                 .bodyToMono(Token.class)
