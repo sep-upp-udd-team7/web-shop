@@ -33,6 +33,18 @@ export class EcommerceService {
         return this.http.post<any>(this.ordersUrl, order);
     }
 
+    confirmOrder(orderId: string) {
+        return this.http.get<any>(this.ordersUrl + "/confirm/" + orderId);
+    }
+
+    cancelOrder(orderId: string) {
+        return this.http.get<any>(this.ordersUrl + "/cancel/" + orderId);
+    }
+
+    getOrderDetails(orderId: string) {
+        return this.http.get<any>(this.ordersUrl + "/" + orderId);
+    }
+
     set SelectedProductOrder(value: ProductOrder) {
         this.productOrder = value;
         this.productOrderSubject.next();

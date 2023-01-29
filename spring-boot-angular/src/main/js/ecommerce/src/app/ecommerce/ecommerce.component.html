@@ -17,7 +17,7 @@
         </div>
     </div>
 </nav>
-<div class="row">
+<div class="row" *ngIf="!(cancelOrder || confirmOrder)">
     <div class="col-md-9">
         <app-products #productsC [hidden]="orderFinished"></app-products>
     </div>
@@ -27,5 +27,13 @@
     </div>
     <div class="col-md-6 offset-3">
         <app-orders #ordersC [hidden]="!orderFinished"></app-orders>
+    </div>
+</div>
+<div class="row" *ngIf="(cancelOrder || confirmOrder)">
+    <div class="col" *ngIf="confirmOrder">
+        <app-confirm-order></app-confirm-order>
+    </div>
+    <div class="col" *ngIf="cancelOrder">
+        <app-cancel-order></app-cancel-order>
     </div>
 </div>

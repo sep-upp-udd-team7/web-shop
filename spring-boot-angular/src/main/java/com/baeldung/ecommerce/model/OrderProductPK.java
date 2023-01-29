@@ -19,7 +19,7 @@ public class OrderProductPK implements Serializable {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
 

@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-8 offset-2">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Thank you for your buying!</h2>
+          <h6 class="">Order number: {{orderId}}</h6>
+          <h3 class="">Status: <span style="color: rgb(3, 223, 3);">{{orderDetail.status}}</span></h3>
+          <br>
+          <hr>
+          <div *ngFor="let item of orderDetail.productOrders; index as i">
+            <div class="row">
+              <div class="col-2">
+                <img [src]="item.product.pictureUrl" alt="" width="100%">
+              </div>
+              <div class="col-4">
+                <h5>{{item.product.name}}</h5>
+              </div>
+              <div class="col-2">
+                <h6>Price: ${{item.product.price}}</h6>
+                <h6>Quantity: {{item.quantity}}</h6>
+              </div>
+              <div class="col-2 offset-2">
+                <h6>Subtotal: ${{item.product.price * item.quantity}}</h6>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div style="display: flex; justify-content: flex-end">
+            <h4 class="text-align-end">Price: ${{orderDetail.price}}</h4>
+          </div>
+          <button (click)="continueShoping()" class="btn btn-primary mt-5">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+</div>

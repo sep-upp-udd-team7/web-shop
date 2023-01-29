@@ -11,6 +11,9 @@ import {OrdersComponent} from "./orders/orders.component";
 export class EcommerceComponent implements OnInit {
     private collapsed = true;
     orderFinished = false;
+    private confirmOrder = false;
+    private cancelOrder = false;
+    private orderId = '';
 
     @ViewChild('productsC')
     productsC: ProductsComponent;
@@ -21,10 +24,18 @@ export class EcommerceComponent implements OnInit {
     @ViewChild('ordersC')
     ordersC: OrdersComponent;
 
+
+
     constructor() {
     }
 
     ngOnInit() {
+        let url = window.location.href;
+        if (url.includes('success')) {
+            this.confirmOrder = true;
+        } else if (url.includes('cancel')) {
+            this.cancelOrder = true;
+        }
     }
 
     toggleCollapsed(): void {
@@ -40,5 +51,7 @@ export class EcommerceComponent implements OnInit {
         this.productsC.reset();
         this.shoppingCartC.reset();
         this.ordersC.paid = false;
+        this.confirmOrder = false;
+        this.cancelOrder = false;
     }
 }

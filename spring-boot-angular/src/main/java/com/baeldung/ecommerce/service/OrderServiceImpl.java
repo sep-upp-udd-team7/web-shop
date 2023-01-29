@@ -1,13 +1,13 @@
 package com.baeldung.ecommerce.service;
 
-import com.baeldung.ecommerce.dto.AccessTokenDto;
-import com.baeldung.ecommerce.dto.AccessTokenRequestDto;
-import com.baeldung.ecommerce.dto.Token;
-import com.baeldung.ecommerce.dto.TransactionDataDto;
+import com.baeldung.ecommerce.dto.*;
 import com.baeldung.ecommerce.model.Order;
+import com.baeldung.ecommerce.model.OrderProduct;
 import com.baeldung.ecommerce.model.OrderStatus;
+import com.baeldung.ecommerce.repository.OrderProductRepository;
 import com.baeldung.ecommerce.repository.OrderRepository;
 import com.baeldung.ecommerce.utils.RandomCharacterGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -88,8 +89,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order changeOrderState(String orderId, OrderStatus status) {
         Order order=orderRepository.getOrderById(orderId);
+        if(order == null) return null;
         order.setStatus(status);
         return orderRepository.save(order);
+    }
+
+    @Autowired
+    private OrderProductRepository orderProductRepository;
+
+    @Override
+    public OrderDetailDto getOrderDetail(String orderId) {
+        Order order = orderRepository.getOrderById(orderId);
+        if(order == null) return null;
+        OrderDetailDto orderDetailDto = new OrderDetailDto();
+        orderDetailDto.setOrderId(orderId);
+        orderDetailDto.setStatus(order.getStatus().toString());
+        orderDetailDto.setPrice(order.getPrice());
+        ArrayList<OrderProductDto> orderProductDtos = new ArrayList<>();
+        for(OrderProduct orderProduct : order.getOrderProducts()){
+            orderProductDtos.add(new OrderProductDto(orderProduct.getProduct(), orderProduct.getQuantity()));
+        }
+        orderDetailDto.setProductOrders(orderProductDtos);
+        return orderDetailDto;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.baeldung.ecommerce.service;
 
+import com.baeldung.ecommerce.dto.OrderDetailDto;
 import com.baeldung.ecommerce.dto.Token;
 import com.baeldung.ecommerce.model.Order;
 import com.baeldung.ecommerce.model.OrderStatus;
@@ -20,4 +21,6 @@ public interface OrderService {
     Token generateOrderToken(Order order);
 
     Order changeOrderState(String orderId, OrderStatus status);
+
+    OrderDetailDto getOrderDetail(String orderId);
 }

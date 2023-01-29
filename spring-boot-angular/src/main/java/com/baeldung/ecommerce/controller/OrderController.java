@@ -1,6 +1,7 @@
 package com.baeldung.ecommerce.controller;
 
 import com.baeldung.ecommerce.dto.CreateOrderResponseDto;
+import com.baeldung.ecommerce.dto.OrderDetailDto;
 import com.baeldung.ecommerce.dto.OrderProductDto;
 import com.baeldung.ecommerce.dto.Token;
 import com.baeldung.ecommerce.exception.ResourceNotFoundException;
@@ -53,6 +54,12 @@ public class OrderController {
     public ResponseEntity<?> cancelOrder(@PathVariable String orderId){
         Order order=this.orderService.changeOrderState(orderId,OrderStatus.CANCELED);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("{orderId}")
+    public ResponseEntity<?> getOrderDetail(@PathVariable String orderId){
+        OrderDetailDto orderDetailDto = orderService.getOrderDetail(orderId);
+        return new ResponseEntity<>(orderDetailDto, HttpStatus.OK);
     }
 
     @PostMapping
