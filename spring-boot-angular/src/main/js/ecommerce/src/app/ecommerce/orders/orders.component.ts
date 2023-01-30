@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProductOrders} from "../models/product-orders.model";
 import {Subscription} from "rxjs/internal/Subscription";
 import {EcommerceService} from "../services/EcommerceService";
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-orders',
@@ -30,7 +31,7 @@ export class OrdersComponent implements OnInit {
         this.paid = true;
         this.ecommerceService.saveOrder(this.orders).subscribe((data)=>{
             alert('Success');
-            window.open("http://localhost:4200/select-payment-option/?token="+data.token.token, "_blank");
+            window.open(environment.backendUrl + "select-payment-option/?token="+data.token.token, "_blank");
         });
     }
 
