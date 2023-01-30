@@ -8,7 +8,9 @@ import com.baeldung.ecommerce.model.Order;
 import com.baeldung.ecommerce.model.OrderStatus;
 import com.baeldung.ecommerce.repository.OrderRepository;
 import com.baeldung.ecommerce.utils.RandomCharacterGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class OrderServiceImpl implements OrderService {
     @Value("${shop-auth.client-secret}")
     private String clientSecret;
 
+    @Autowired
+    private Environment environment;
 
     public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -49,7 +53,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Token generateOrderToken(Order order) {
-        WebClient webClient = WebClient.create("http://localhost:8000");
+        System.out.println("URL PSP: " + environment.getProperty("psp.url"));
+        WebClient webClient = WebClient.create(environment.getProperty("psp.url"));
         TransactionDataDto transactionDataDto = new TransactionDataDto();
         transactionDataDto.setTransactionId(order.getOrderId());
         transactionDataDto.setShopId(shopId);
@@ -74,7 +79,8 @@ public class OrderServiceImpl implements OrderService {
         AccessTokenRequestDto dto=new AccessTokenRequestDto();
         dto.setClientId(shopId);
         dto.setClientSecret(clientSecret);
-        WebClient webClient = WebClient.create("http://localhost:8000");
+        System.out.println("URL PSP: " + environment.getProperty("psp.url"));
+        WebClient webClient = WebClient.create(environment.getProperty("psp.url"));
         AccessTokenDto accessTokenDto = webClient.post()
                 .uri("/auth-service/generate-jwt")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

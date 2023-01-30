@@ -3,11 +3,12 @@ import {Subject} from "rxjs/internal/Subject";
 import {ProductOrders} from "../models/product-orders.model";
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from "@angular/core";
+import { environment } from "src/environments/environment";
 
 @Injectable()
 export class EcommerceService {
-    private productsUrl = "http://localhost:9000/api/products";
-    private ordersUrl = "http://localhost:9000/api/orders";
+    private productsUrl = environment.backendUrl + "products";
+    private ordersUrl = environment.backendUrl + "orders";
 
     private productOrder: ProductOrder;
     private orders: ProductOrders = new ProductOrders();

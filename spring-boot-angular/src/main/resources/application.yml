@@ -25,7 +25,11 @@ jwt:
 
 server:
   port: 9000
-
+  ssl:
+    key-store: classpath:local-ssl.p12
+    key-store-password: password
+    keyStoreType: PKCS12
+    keyAlias: local_ssl
 managment:
   security:
     enabled: true
@@ -33,3 +37,10 @@ managment:
 shop-auth:
   client-id: 123456789
   client-secret: 123
+
+
+psp:
+  url: 'https://localhost:8000'
+
+shop:
+  url: 'https://localhost:4200'

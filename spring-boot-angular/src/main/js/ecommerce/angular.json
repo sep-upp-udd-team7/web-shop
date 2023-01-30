@@ -53,6 +53,10 @@
           "options": {
             "browserTarget": "frontend:build",
 	          "port": 4201
+            // ,
+            // "ssl": true,
+            // "sslKey": "ssl/server.key",
+            // "sslCert": "ssl/server.crt"
           },
           "configurations": {
             "production": {
