@@ -4,6 +4,7 @@ import {EcommerceService} from "../services/EcommerceService";
 import {Subscription} from "rxjs/internal/Subscription";
 import {ProductOrders} from "../models/product-orders.model";
 import {Product} from "../models/product.model";
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-products',
@@ -78,5 +79,13 @@ export class ProductsComponent implements OnInit {
         this.ecommerceService.ProductOrders.productOrders = [];
         this.loadOrders();
         this.productSelected = false;
+    }
+
+    subscribe(){
+        this.ecommerceService.subscribePaypal().subscribe(data=>{
+            window.open(data.url, "_blank");
+        },error=>{
+            alert('Something went wrong');
+        })
     }
 }

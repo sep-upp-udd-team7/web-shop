@@ -6,14 +6,14 @@ import {OrdersComponent} from "./orders/orders.component";
 @Component({
     selector: 'app-ecommerce',
     templateUrl: './ecommerce.component.html',
-    styleUrls: ['./ecommerce.component.css']
+    styleUrls: ['./ecommerce.component.scss']
 })
 export class EcommerceComponent implements OnInit {
-    private collapsed = true;
+    public collapsed = true;
     orderFinished = false;
-    private confirmOrder = false;
-    private cancelOrder = false;
-    private orderId = '';
+    public confirmOrder = false;
+    public cancelOrder = false;
+    public orderId = '';
 
     @ViewChild('productsC')
     productsC: ProductsComponent;

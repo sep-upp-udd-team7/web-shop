@@ -28,10 +28,10 @@ export class OrdersComponent implements OnInit {
     }
 
     pay() {
-        this.paid = true;
+        this.paid = false;
         this.ecommerceService.saveOrder(this.orders).subscribe((data)=>{
             alert('Success');
-            window.open(environment.backendUrl + "select-payment-option/?token="+data.token.token, "_blank");
+            window.open(environment.frontUrl + "select-payment-option/?token="+data.token.token, "_blank");
         });
     }
 

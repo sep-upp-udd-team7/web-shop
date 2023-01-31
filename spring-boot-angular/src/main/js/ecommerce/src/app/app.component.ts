@@ -7,6 +7,7 @@ import {EcommerceService} from "./ecommerce/services/EcommerceService";
     styleUrls: ['./app.component.css'],
     providers: [EcommerceService]
 })
-export class AppComponent {
 
+export class AppComponent {
+    
 }

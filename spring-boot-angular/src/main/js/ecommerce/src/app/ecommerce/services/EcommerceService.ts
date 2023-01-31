@@ -7,6 +7,8 @@ import { environment } from "src/environments/environment";
 
 @Injectable()
 export class EcommerceService {
+    
+    
     private productsUrl = environment.backendUrl + "products";
     private ordersUrl = environment.backendUrl + "orders";
 
@@ -44,6 +46,17 @@ export class EcommerceService {
 
     getOrderDetails(orderId: string) {
         return this.http.get<any>(this.ordersUrl + "/" + orderId);
+    }
+
+    subscribePaypal(){
+        return this.http.get<any>(environment.backendUrl + 'subscriptions/20');
+    }
+
+    confirmSubscription(token: string) {
+        return this.http.get<any>(environment.backendUrl + 'subscriptions/confirm/'+token);
+    }
+    cancelSubscription(token: string) {
+        return this.http.get<any>(environment.backendUrl + 'subscriptions/cancel/'+token);
     }
 
     set SelectedProductOrder(value: ProductOrder) {

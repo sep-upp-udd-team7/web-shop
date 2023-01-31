@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router'
 
 import {AppComponent} from './app.component';
 import {EcommerceComponent} from './ecommerce/ecommerce.component';
@@ -11,7 +12,16 @@ import {OrdersComponent} from './ecommerce/orders/orders.component';
 import {EcommerceService} from "./ecommerce/services/EcommerceService";
 import { CancelOrderComponent } from './ecommerce/cancel-order/cancel-order.component';
 import { ConfirmOrderComponent } from './ecommerce/confirm-order/confirm-order.component';
+import { SubscriptionPaidComponent } from './ecommerce/subscription-paid/subscription-paid.component';
+import { SubscriptionCanceledComponent } from './ecommerce/subscription-canceled/subscription-canceled.component';
 
+const routes: Routes = [
+    { path: 'home', component: EcommerceComponent },
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    {path:'confirm-subscription',component:SubscriptionPaidComponent},
+    {path:'cancel-subscription',component:SubscriptionCanceledComponent}
+  ]
+  
 @NgModule({
     declarations: [
         AppComponent,
@@ -20,13 +30,16 @@ import { ConfirmOrderComponent } from './ecommerce/confirm-order/confirm-order.c
         ShoppingCartComponent,
         OrdersComponent,
         CancelOrderComponent,
-        ConfirmOrderComponent
+        ConfirmOrderComponent,
+        SubscriptionPaidComponent,
+        SubscriptionCanceledComponent
     ],
     imports: [
         BrowserModule,
         HttpClientModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule.forRoot(routes)
     ],
     providers: [EcommerceService],
     bootstrap: [AppComponent]
