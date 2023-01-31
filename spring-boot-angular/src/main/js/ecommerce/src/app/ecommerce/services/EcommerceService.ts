@@ -7,8 +7,6 @@ import { environment } from "src/environments/environment";
 
 @Injectable()
 export class EcommerceService {
-    
-    
     private productsUrl = environment.backendUrl + "products";
     private ordersUrl = environment.backendUrl + "orders";
 
