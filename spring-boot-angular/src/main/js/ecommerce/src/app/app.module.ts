@@ -19,7 +19,9 @@ const routes: Routes = [
     { path: 'home', component: EcommerceComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     {path:'confirm-subscription',component:SubscriptionPaidComponent},
-    {path:'cancel-subscription',component:SubscriptionCanceledComponent}
+    {path:'cancel-subscription',component:SubscriptionCanceledComponent},
+    {path:'success/:id',component:ConfirmOrderComponent},
+    {path:'cancel/:id',component:CancelOrderComponent}
   ]
   
 @NgModule({
