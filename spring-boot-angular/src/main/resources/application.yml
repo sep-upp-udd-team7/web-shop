@@ -40,7 +40,7 @@ shop-auth:
 
 
 psp:
-  url: 'http://localhost:8000'
+  url: 'http://192.168.238.103:8000'
 
 shop:
-  url: 'http://localhost:4200'
+  url: 'http://192.168.238.103:4200'
