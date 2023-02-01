@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class AccessTokenDto {
     String token;
+
+    String roles;
 }
